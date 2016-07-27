@@ -4,6 +4,7 @@ services:
     image: data:latest
     volumes:
       - ./var/postgresql/data:/var/lib/postgresql/data
+      - ./repos:/root/elib
 
   redis:
     restart: always

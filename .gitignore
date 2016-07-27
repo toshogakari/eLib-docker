@@ -1,5 +1,6 @@
 venv
 builds/development/data/repos
+composes/development/repos
 composes/development/var/postgresql/data/*
 .DS_Store
 *.env
