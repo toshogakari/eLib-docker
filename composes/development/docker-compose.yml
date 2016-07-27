@@ -3,7 +3,7 @@ services:
   data:
     image: data:latest
     volumes:
-      - ./var/postgresql:/var/lib/postgresql
+      - ./var/postgresql/data:/var/lib/postgresql/data
 
   redis:
     restart: always
@@ -26,38 +26,37 @@ services:
       - POSTGRES_PASSWORD=elib
       - POSTGRES_USER=elib
       - POSTGRES_DB=elib
-  # postgresqlの設定ファイルのマウント先が、大量の設定ファイルがあり、上書きで削除されてしまう
-  #   volumes_from:
-  #     - data
+    volumes_from:
+      - data
 
-  # elib:
-  #   restart: always
-  #   image: pyar6329/elib:0.1.0
-  #   depends_on:
-  #     - redis
-  #     - postgresql
-  #     - elasticsearch
-  #   links:
-  #     - redis
-  #     - postgresql
-  #     - elasticsearch
-  #   expose:
-  #     - "3000"
-  #   environment:
-  #     - DB_HOST=127.0.0.1
-  #     - DB_DATABASE=elib
-  #     - DB_USERNAME=elib
-  #     - DB_PASSWORD=elib
-  #
-  # nginx:
-  #   restart: always
-  #   image: nginx:mainline-alpine
-  #   depends_on:
-  #     - data
-  #     - elib
-  #   volumes_from:
-  #     - data
-  #   links:
-  #     - elib
-  #   ports:
-  #    - "80:80"
+  elib:
+    restart: always
+    image: pyar6329/elib:0.1.0
+    depends_on:
+      - redis
+      - postgresql
+      - elasticsearch
+    links:
+      - redis
+      - postgresql
+      - elasticsearch
+    expose:
+      - "3000"
+    environment:
+      - DB_HOST=127.0.0.1
+      - DB_DATABASE=elib
+      - DB_USERNAME=elib
+      - DB_PASSWORD=elib
+
+  nginx:
+    restart: always
+    image: nginx:mainline-alpine
+    depends_on:
+      - data
+      - elib
+    volumes_from:
+      - data
+    links:
+      - elib
+    ports:
+     - "80:80"
