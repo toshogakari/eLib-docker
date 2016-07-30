@@ -1,7 +1,7 @@
 version: "2"
 services:
   data:
-    image: data:latest
+    image: pyar6329/elib-docker:data-dev
     volumes:
       - ./var/postgresql/data:/var/lib/postgresql/data
       - ./repos:/root/elib
@@ -9,8 +9,6 @@ services:
   redis:
     restart: always
     image: redis:3-alpine
-    depends_on:
-      - data
     volumes_from:
       - data
     command: redis-server /etc/redis/redis.conf
@@ -33,14 +31,16 @@ services:
   elib:
     restart: always
     image: pyar6329/elib:0.1.0
+    volumes_from:
+      - data
     depends_on:
       - redis
       - postgresql
       - elasticsearch
     links:
-      - redis
-      - postgresql
-      - elasticsearch
+      - "redis:redis"
+      - "postgresql:postgresql"
+      - "elasticsearch:elasticsearch"
     expose:
       - "3000"
     environment:
@@ -48,16 +48,22 @@ services:
       - DB_DATABASE=elib
       - DB_USERNAME=elib
       - DB_PASSWORD=elib
+    entrypoint: dockerize -wait tcp://postgresql:5432 -wait tcp://redis:6379 -wait tcp://elasticsearch:9200 -timeout 300s
+    command: rails s -b 0.0.0.0
 
   nginx:
     restart: always
     image: nginx:mainline-alpine
+    volumes_from:
+      - data
     depends_on:
       - data
       - elib
     volumes_from:
       - data
     links:
-      - elib
+      - "elib:elib"
     ports:
      - "80:80"
+    entrypoint: dockerize -wait tcp://elib:3000 -timeout 300s
+    command: nginx -g 'daemon off;'
