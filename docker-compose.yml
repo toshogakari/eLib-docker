@@ -1,10 +1,9 @@
 version: "2"
 services:
   data:
-    image: pyar6329/elib-docker:data-dev
+    image: pyar6329/rails-base:data-latest
     volumes:
       - ./var/postgresql/data:/var/lib/postgresql/data
-      - ./repos:/root/elib
 
   redis:
     restart: always
@@ -21,18 +20,18 @@ services:
   postgresql:
     restart: always
     image: postgres:9.5
-    environment:
-      - POSTGRES_PASSWORD=elib
-      - POSTGRES_USER=elib
-      - POSTGRES_DB=elib
     volumes_from:
       - data
+    env_file:
+      - ./env/psql.env
 
   elib:
-    restart: always
-    image: pyar6329/elib:0.1.0
+    # restart: always
+    build: ./builds/development/rails
     volumes_from:
       - data
+    volumes:
+      - ./builds/development/rails/app:/usr/src/app
     depends_on:
       - redis
       - postgresql
@@ -41,15 +40,8 @@ services:
       - "redis:redis"
       - "postgresql:postgresql"
       - "elasticsearch:elasticsearch"
-    expose:
-      - "3000"
-    environment:
-      - DB_HOST=127.0.0.1
-      - DB_DATABASE=elib
-      - DB_USERNAME=elib
-      - DB_PASSWORD=elib
-    entrypoint: dockerize -wait tcp://postgresql:5432 -wait tcp://redis:6379 -wait tcp://elasticsearch:9200 -timeout 300s
-    command: rails s -b 0.0.0.0
+    env_file:
+      - ./env/elib.env
 
   nginx:
     restart: always
