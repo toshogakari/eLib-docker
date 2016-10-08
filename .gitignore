@@ -1,6 +1,5 @@
-venv
-builds/development/rails/app
-var/postgresql/data
+api/builds/development/rails/app
+api/var/postgresql/data
 .DS_Store
 *.dab
 !.gitkeep
