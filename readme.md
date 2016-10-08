@@ -7,7 +7,7 @@
 ```
 $ git clone git@github.com:toshogakari/eLib-docker.git
 $ cd eLib-docker
-$ git clone git@github.com:toshogakari/eLib.git builds/development/rails/app
+$ git clone git@github.com:toshogakari/eLib-api.git builds/development/rails/app
 $ docker-compose up -d
 ```
 

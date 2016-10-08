@@ -1,4 +1,4 @@
-FROM pyar6329/rails-base:dev-2.3.1-6.3.1
+FROM pyar6329/rails-base:dev-ruby-2.3.1
 MAINTAINER Tsukasa Arima
 
 # RUN set -x \
