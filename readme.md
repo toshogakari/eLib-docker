@@ -1,5 +1,12 @@
 # eLib docker
 
+## 準備
+dockerをインストールしておく
+
+[https://www.docker.com/products/docker](https://www.docker.com/products/docker)
+
+使うのはdockerとdocker-compose
+
 ## Using
 
 ### 起動
