@@ -22,6 +22,10 @@ $ docker-compose up -d
 
 [http://localhost](http://localhost) にアクセス(3000番じゃない)
 
+### Coding
+
+`builds/development/rails/app` がマウントされるので、そのディレクトリを編集する。
+
 ### bashでログイン
 
 ```
