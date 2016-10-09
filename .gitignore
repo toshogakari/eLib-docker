@@ -1,5 +1,6 @@
-api/builds/development/rails/app
-api/var/postgresql/data
+/api/builds/development/rails/app
+/front/builds/development/node/app
+/api/var/postgresql/data
 .DS_Store
 *.dab
 !.gitkeep

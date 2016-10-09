@@ -1,0 +1,11 @@
+version: "2"
+services:
+  elib-front:
+    # restart: always
+    build: ./builds/development/node
+    volumes:
+      - ./builds/development/node/app:/app
+    env_file:
+      - ./env/elib.env
+    ports:
+     - "8080:8080"
