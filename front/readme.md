@@ -13,7 +13,7 @@ dockerをインストールしておく
 
 ```
 $ git clone git@github.com:toshogakari/eLib-docker.git
-$ cd eLib-docker/api
+$ cd eLib-docker/front
 $ git clone git@github.com:toshogakari/eLib-front.git builds/development/node/app
 $ docker-compose up -d
 ```
