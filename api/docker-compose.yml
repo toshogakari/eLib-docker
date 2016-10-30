@@ -6,27 +6,25 @@ services:
       - ./var/postgresql/data:/var/lib/postgresql/data
 
   redis:
-    restart: always
     image: redis:3-alpine
     volumes_from:
       - data
     command: redis-server /etc/redis/redis.conf
-
+ 
   elasticsearch:
-    restart: always
     image: elasticsearch:2.3
     command: elasticsearch -Des.network.host=0.0.0.0
-
+  
   postgresql:
-    restart: always
-    image: postgres:9.5
+    build: ./builds/development/postgres
     volumes_from:
       - data
     env_file:
       - ./env/psql.env
+#    ports:
+#      - "5432:5432"
 
   elib:
-    # restart: always
     build: ./builds/development/rails
     volumes_from:
       - data
@@ -42,9 +40,8 @@ services:
       - "elasticsearch:elasticsearch"
     env_file:
       - ./env/elib.env
-
+ 
   nginx:
-    restart: always
     image: nginx:mainline-alpine
     volumes_from:
       - data
