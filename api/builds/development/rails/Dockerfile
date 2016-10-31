@@ -12,6 +12,6 @@ RUN set -x \
 WORKDIR /usr/src/app
 
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["spring", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
+CMD ["spring", "rails", "s", "-p", "3000", "-b", "0.0.0.0", "-P", "/tmp/rails_server.pid"]
 
 EXPOSE 3000
