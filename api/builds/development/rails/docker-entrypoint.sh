@@ -12,10 +12,8 @@ if [ "$1" = "rails" -o "$2" = "rails" ]; then
     fi
     if [ $RAILS_VERSION -ge 5 ]; then
       rails db:migrate
-      rails db:seed
     else
       rake db:migrate
-      rake db:seed
     fi
     exec "$@"
 fi
