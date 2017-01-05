@@ -4,25 +4,39 @@ services:
     image: pyar6329/rails-base:data-latest
     volumes:
       - ./var/postgresql/data:/var/lib/postgresql/data
+    networks:
+      web_server:
+        aliases:
+          - data
 
   redis:
     image: redis:3-alpine
     volumes_from:
       - data
     command: redis-server /etc/redis/redis.conf
- 
+    networks:
+      web_server:
+        aliases:
+          - redis
+
   elasticsearch:
     image: elasticsearch:2.3
     command: elasticsearch -Des.network.host=0.0.0.0
-  
+    networks:
+      web_server:
+        aliases:
+          - elasticsearch
+
   postgresql:
     build: ./builds/development/postgres
     volumes_from:
       - data
     env_file:
       - ./env/psql.env
-#    ports:
-#      - "5432:5432"
+    networks:
+      web_server:
+        aliases:
+          - postgresql
 
   elib:
     build: ./builds/development/rails
@@ -40,19 +54,12 @@ services:
       - "elasticsearch:elasticsearch"
     env_file:
       - ./env/elib.env
- 
-  nginx:
-    image: nginx:mainline-alpine
-    volumes_from:
-      - data
-    depends_on:
-      - data
-      - elib
-    volumes_from:
-      - data
-    links:
-      - "elib:elib"
-    ports:
-     - "80:80"
-    entrypoint: dockerize -wait tcp://elib:3000 -timeout 300s
-    command: nginx -g 'daemon off;'
+    networks:
+      web_server:
+        ipv4_address: 172.25.0.21
+        aliases:
+          - elib
+networks:
+  web_server:
+    external: true
+
