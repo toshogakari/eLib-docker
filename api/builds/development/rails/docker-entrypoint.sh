@@ -1,8 +1,12 @@
 #!/bin/sh
 set -ex
 
-if [ "$1" = "sh" -o "$1" = "bash" ]; then
+if [ "$1" = "bash" ]; then
     exec "bash"
+fi
+
+if [ "$1" = "sh" ]; then
+    exec "sh"
 fi
 
 if [ "$1" = "rails" -o "$2" = "rails" ]; then
