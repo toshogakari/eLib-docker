@@ -1,13 +1,18 @@
-FROM pyar6329/rails-base:dev-ruby-2.3.1
+FROM pyar6329/rails-base:dev-ruby-2.3.3
 MAINTAINER Tsukasa Arima
 
-# RUN set -x \
-#     && rm -rf /usr/local/bin/docker-entrypoint.sh
-#
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY app/Gemfile* /usr/src/app/
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 
 RUN set -x \
-    && chmod u+x /usr/local/bin/docker-entrypoint.sh
+    && CPU_CORES="$(cat /proc/cpuinfo | grep "cpu cores" | wc -l)" \
+    && chmod u+x /usr/local/bin/docker-entrypoint.sh \
+    && cd /usr/src/app \
+    && gem update --system \
+    && gem update bundler \
+    && bundle install --jobs=${CPU_CORES}
+
+COPY app /usr/src/app
 
 WORKDIR /usr/src/app
 
