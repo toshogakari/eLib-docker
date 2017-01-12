@@ -1,4 +1,4 @@
-FROM pyar6329/rails-base:dev-ruby-2.3.3
+FROM pyar6329/rails-base:dev-2.3.3
 MAINTAINER Tsukasa Arima
 
 COPY app/Gemfile* /usr/src/app/
