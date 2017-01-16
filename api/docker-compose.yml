@@ -44,6 +44,7 @@ services:
       - data
     volumes:
       - ./builds/development/rails/app:/usr/src/app
+#      - elib_repo:/usr/src/app
     depends_on:
       - redis
       - postgresql
@@ -59,7 +60,15 @@ services:
         ipv4_address: 172.25.0.21
         aliases:
           - elib
+
+#volumes:
+#  elib_repo:
+#    driver: local
+#    driver_opts:
+#      type: overlay2
+#      o: uid=1001,gid=1001
+#      device: "./builds/development/rails/app"
+
 networks:
   web_server:
     external: true
-
