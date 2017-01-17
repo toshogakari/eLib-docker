@@ -10,11 +10,11 @@ services:
     volumes_from:
       - data
     command: redis-server /etc/redis/redis.conf
- 
+
   elasticsearch:
-    image: elasticsearch:2.3
+    image: elasticsearch:2.4-alpine
     command: elasticsearch -Des.network.host=0.0.0.0
-  
+
   postgresql:
     build: ./builds/development/postgres
     volumes_from:
@@ -40,7 +40,7 @@ services:
       - "elasticsearch:elasticsearch"
     env_file:
       - ./env/elib.env
- 
+
   nginx:
     image: nginx:mainline-alpine
     volumes_from:
